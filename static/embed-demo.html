@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widget embedding demo</title>
+<style>
+  body { margin:0; font:17px/1.5 "Segoe UI", sans-serif; color:#1C1A2E; background:#F5F4FA; }
+  .page { max-width:760px; margin:40px auto; padding:0 20px; }
+  code { background:#fff; border:1px solid #DAD7E8; border-radius:4px; padding:2px 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Widget embedding demo</h1>
+  <p>This plain page stands in for any other website (for example a lab or class portal).
+     It contains no helpdesk code except one line:</p>
+  <p><code>&lt;script src="http://localhost:8000/static/embed.js"&gt;&lt;/script&gt;</code></p>
+  <p>Click <b>Lab Helpdesk</b> in the bottom-right corner to open LabAssist. The widget talks to the
+     same backend as the main app, so the same guardrails, rate limits and tickets apply.</p>
+  <p>A fuller example, a sample CSIS ICT Laboratory portal page, is at <a href="/portal">/portal</a>.</p>
+</div>
+<script src="/static/embed.js"></script>
+</body>
+</html>

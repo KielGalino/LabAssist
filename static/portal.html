@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSIS ICT Laboratory Portal (sample)</title>
+<!-- Sample lab portal (served at /portal). The widget is the script tag at the bottom. -->
+<style>
+  :root { --primary:#310098; --primary-dark:#22006B; --secondary:#036403; --accent:#C9A800;
+          --alert:#B3261E; --text:#1C1A2E; --muted:#4F4C63; --border:#DAD7E8; --surface:#F5F4FA; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font:16px/1.55 "Segoe UI", "Source Sans Pro", Arial, sans-serif; color:var(--text);
+         background:var(--surface); }
+  a { color:var(--primary); }
+  .wrap { max-width:1140px; margin:0 auto; padding:0 20px; }
+
+  /* top utility bar */
+  .utility { background:var(--primary-dark); color:#D9D2F5; font-size:.85rem; }
+  .utility .wrap { display:flex; justify-content:space-between; gap:12px; padding-top:6px; padding-bottom:6px; }
+
+  /* masthead + navigation */
+  .masthead { background:#fff; border-bottom:4px solid var(--accent); }
+  .masthead .wrap { display:flex; align-items:center; gap:16px; padding-top:14px; padding-bottom:14px; flex-wrap:wrap; }
+  .masthead img { width:64px; height:64px; }
+  .school { flex:1; min-width:220px; }
+  .school .name { font-size:1.35rem; font-weight:700; color:var(--primary); line-height:1.2; }
+  .school .motto { font-size:.82rem; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+  nav { display:flex; flex-wrap:wrap; gap:4px; }
+  nav a { text-decoration:none; color:var(--text); font-weight:600; padding:8px 12px; border-radius:6px; font-size:.95rem; }
+  nav a:hover, nav a.current { background:var(--surface); color:var(--primary); }
+
+  /* hero */
+  .hero { background:var(--primary); color:#fff; }
+  .hero .wrap { display:grid; grid-template-columns:1.4fr 1fr; gap:28px; padding-top:38px; padding-bottom:38px; }
+  .hero h1 { margin:0 0 8px; font-size:2.1rem; line-height:1.15; }
+  .hero p { margin:0 0 18px; color:#E4DEFA; max-width:560px; }
+  .btn { display:inline-block; padding:11px 18px; border-radius:6px; font-weight:700; text-decoration:none;
+         border:2px solid transparent; cursor:pointer; font-size:.98rem; font-family:inherit; }
+  .btn-gold { background:var(--accent); color:var(--text); }
+  .btn-gold:hover { background:#B39500; }
+  .btn-line { border-color:#fff; color:#fff; background:transparent; margin-left:8px; }
+  .btn-line:hover { background:rgba(255,255,255,.12); }
+  .status-card { background:#fff; color:var(--text); border-radius:10px; padding:18px 20px; border-top:5px solid var(--secondary); }
+  .status-card h2 { margin:0 0 10px; font-size:1.05rem; color:var(--primary); }
+  .status-row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #ECEAF3; font-size:.95rem; }
+  .status-row:last-child { border-bottom:none; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; background:var(--muted); }
+  .dot.ok { background:var(--secondary); } .dot.off { background:var(--alert); }
+  .band { height:6px; background:linear-gradient(90deg, var(--secondary) 0 33.3%, var(--accent) 33.3% 66.6%, #fff 66.6%); }
+
+  /* content */
+  main { padding:30px 0 60px; }
+  h2.title { display:flex; align-items:center; gap:10px; font-size:1.35rem; color:var(--primary); margin:34px 0 14px; }
+  h2.title::before { content:""; width:6px; height:1.2em; border-radius:3px; background:var(--accent); }
+  .quick { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+  .tile { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; text-decoration:none;
+          color:var(--text); border-top:4px solid var(--primary); display:block; }
+  .tile:nth-child(2) { border-top-color:var(--secondary); } .tile:nth-child(3) { border-top-color:var(--accent); }
+  .tile:nth-child(4) { border-top-color:var(--alert); }
+  .tile:hover { border-color:var(--primary); }
+  .tile b { display:block; color:var(--primary); margin-bottom:4px; }
+  .tile span { font-size:.92rem; color:var(--muted); }
+  .grid2 { display:grid; grid-template-columns:1.3fr 1fr; gap:22px; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:4px 18px; }
+  .news { padding:14px 0; border-bottom:1px solid #ECEAF3; }
+  .news:last-child { border-bottom:none; }
+  .news .date { font-size:.8rem; font-weight:700; color:var(--secondary); text-transform:uppercase; letter-spacing:.04em; }
+  .news h3 { margin:2px 0 4px; font-size:1.05rem; }
+  .news p { margin:0; color:var(--muted); font-size:.95rem; }
+  .tag { display:inline-block; padding:1px 9px; border-radius:999px; font-size:.75rem; font-weight:700; margin-left:6px;
+         background:#FBF5D9; color:#5E4F00; border:1px solid #E9D98A; vertical-align:middle; }
+  table { width:100%; border-collapse:collapse; font-size:.95rem; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid #ECEAF3; }
+  th { color:var(--muted); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+  .steps { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+  .step { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .num { display:inline-block; width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%;
+         background:var(--primary); color:#fff; font-weight:700; margin-bottom:6px; }
+  .step:nth-child(2) .num { background:var(--secondary); } .step:nth-child(3) .num { background:var(--accent); color:var(--text); }
+  .step p { margin:4px 0 0; color:var(--muted); font-size:.93rem; }
+  .notice { margin-top:16px; padding:12px 16px; border-left:5px solid var(--alert); background:#FBE9E7; border-radius:6px; font-size:.95rem; }
+
+  footer { background:var(--primary-dark); color:#CFC7EE; font-size:.88rem; }
+  footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:18px; padding-bottom:18px; }
+
+  @media (max-width: 860px) {
+    .hero .wrap, .grid2 { grid-template-columns:1fr; }
+    .quick { grid-template-columns:repeat(2, 1fr); }
+    .steps { grid-template-columns:1fr; }
+    .btn-line { margin-left:0; margin-top:8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="utility"><div class="wrap">
+  <span>Cavite Science Integrated School - ICT Laboratory</span>
+  <span id="today"></span>
+</div></div>
+
+<header class="masthead"><div class="wrap">
+  <img src="/assets/csis-logo.png" alt="CSIS logo">
+  <div class="school">
+    <div class="name">Cavite Science Integrated School</div>
+    <div class="motto">We Engage. We Explore. We Excel.</div>
+  </div>
+  <nav>
+    <a class="current" href="#">Home</a>
+    <a href="#announcements">Announcements</a>
+    <a href="#schedule">Lab Schedule</a>
+    <a href="#help">Get Help</a>
+  </nav>
+</div></header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>ICT Laboratory Portal</h1>
+      <p>Schedules, announcements and support for the 42 thin-client stations of the CSIS ICT
+         Laboratory. Having a problem with a lab computer? Ask the Lab Helpdesk first.</p>
+      <button class="btn btn-gold" onclick="window.LabAssist && LabAssist.open()">Open Lab Helpdesk</button>
+      <a class="btn btn-line" href="#help">How to get help</a>
+    </div>
+    <div class="status-card">
+      <h2>Laboratory status</h2>
+      <div class="status-row"><span>Lab Helpdesk</span><span id="hd-status"><span class="dot"></span>Checking...</span></div>
+      <div class="status-row"><span>Stations</span><b>42 (PC-01 to PC-42)</b></div>
+      <div class="status-row"><span>MultiPoint servers</span><b>MPS-1, MPS-2, MPS-3</b></div>
+      <div class="status-row"><span>Hours</span><b>Mon - Fri, 7:00 AM - 5:00 PM</b></div>
+    </div>
+  </div>
+  <div class="band"></div>
+</section>
+
+<main class="wrap">
+  <h2 class="title">Quick links</h2>
+  <div class="quick">
+    <a class="tile" href="#" onclick="window.LabAssist && LabAssist.open(); return false;">
+      <b>Lab Helpdesk</b><span>Troubleshooting steps, tickets and unlock requests.</span></a>
+    <a class="tile" href="#schedule"><b>Lab Schedule</b><span>Weekly laboratory periods per section.</span></a>
+    <a class="tile" href="#announcements"><b>Announcements</b><span>Maintenance days and lab notices.</span></a>
+    <a class="tile" href="#help"><b>Emergency</b><span>Sparks, smoke or a burning smell: what to do.</span></a>
+  </div>
+
+  <div class="grid2">
+    <section id="announcements">
+      <h2 class="title">Announcements</h2>
+      <div class="card">
+        <div class="news"><div class="date">Every first Saturday</div>
+          <h3>Monthly maintenance <span class="tag">Notice</span></h3>
+          <p>The laboratory is closed for updates and cleaning. Save your files to your USB drive or
+             cloud storage before Friday.</p></div>
+        <div class="news"><div class="date">Reminder</div>
+          <h3>Station log-in is done by your teacher</h3>
+          <p>Stations are logged in by the teacher at the start of the period. Students are never
+             given station passwords. If a station is locked, ask the Lab Helpdesk.</p></div>
+        <div class="news"><div class="date">Lab rules</div>
+          <h3>No food or drinks inside the laboratory</h3>
+          <p>Keep bags on the rack and report damaged equipment right away so it can be repaired.</p></div>
+      </div>
+    </section>
+
+    <section id="schedule">
+      <h2 class="title">Lab schedule</h2>
+      <div class="card">
+        <table>
+          <thead><tr><th>Section</th><th>Day</th><th>Time</th></tr></thead>
+          <tbody>
+            <tr><td><b>ICT-11A</b></td><td>Monday, Wednesday</td><td>8:00 - 10:00 AM</td></tr>
+            <tr><td><b>ICT-11B</b></td><td>Tuesday, Thursday</td><td>10:00 AM - 12:00 NN</td></tr>
+            <tr><td><b>ICT-12A</b></td><td>Monday, Friday</td><td>1:00 - 3:00 PM</td></tr>
+            <tr><td>Open lab</td><td>Wednesday</td><td>3:00 - 5:00 PM</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section id="help">
+    <h2 class="title">How to get help</h2>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><b>Open the Lab Helpdesk</b>
+        <p>Click the Lab Helpdesk button at the bottom right and choose Student or Teacher. No sign-in is needed.</p></div>
+      <div class="step"><span class="num">2</span><b>Describe the problem</b>
+        <p>Write in English or Taglish and include the unit number, for example PC-12.</p></div>
+      <div class="step"><span class="num">3</span><b>Follow the steps or file a request</b>
+        <p>If the steps do not fix it, the helpdesk files a ticket for the Lab Administrator.</p></div>
+    </div>
+    <div class="notice"><b>Emergency:</b> if you see sparks or smoke or smell something burning, step
+      away from the unit and tell your teacher at once.</div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>CSIS ICT Laboratory</span>
+  <span>Sample portal page for the LabAssist capstone demo</span>
+</div></footer>
+
+<script>
+  document.getElementById("today").textContent = new Date().toLocaleDateString("en-PH",
+    { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+  // helpdesk status
+  fetch("/api/health").then(r => r.json()).then(h => {
+    document.getElementById("hd-status").innerHTML =
+      '<span class="dot ok"></span>Online' + (h.llm === "online" ? "" : " (offline mode)");
+  }).catch(() => {
+    document.getElementById("hd-status").innerHTML = '<span class="dot off"></span>Unavailable';
+  });
+</script>
+
+<!-- LabAssist widget -->
+<script src="/static/embed.js"></script>
+</body>
+</html>
