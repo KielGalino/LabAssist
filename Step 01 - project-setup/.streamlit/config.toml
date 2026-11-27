@@ -1,0 +1,22 @@
+# Streamlit settings. Colors from the CSIS logo.
+
+[browser]
+gatherUsageStats = false
+
+[server]
+headless = true
+
+[client]
+toolbarMode = "minimal"          # hide the Deploy button
+
+[theme]
+base = "light"
+primaryColor = "#310098"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F5F4FA"
+textColor = "#1C1A2E"
+borderColor = "#DAD7E8"
+font = "sans-serif"
+baseFontSize = 17                # default is 16
+baseRadius = "small"
+chartCategoricalColors = ["#310098", "#036403", "#C9A800", "#B3261E", "#50C3ED", "#6B5BB5", "#5E8F5E", "#8C8A99"]

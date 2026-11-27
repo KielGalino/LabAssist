@@ -1,0 +1,10 @@
+# free / open-source packages
+streamlit>=1.40
+openai>=1.50          # LLM client (Gemini, Groq, Ollama)
+chromadb>=0.5.20      # vector database
+rank-bm25>=0.2.2      # keyword search (BM25)
+python-dotenv>=1.0    # loads settings from .env
+pandas>=2.0           # tables/charts in the admin dashboard
+fastapi>=0.110        # REST API (api.py)
+uvicorn>=0.30         # runs the REST API
+pytest>=8.0           # automated tests
